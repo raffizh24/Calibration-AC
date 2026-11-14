@@ -1,0 +1,31 @@
+====================================================================
+PANDUAN WEB UPLOAD EXCEL + WINDOWS STARTUP POPUP NOTIFIER (5 MENIT)
+====================================================================
+
+1. SETUP WEB SERVER (XAMPP / LARAGON)
+   - Salin file berikut ke folder `C:\xampp\htdocs\calibration\`:
+     * `index.php` (Halaman 1-layar: Upload Excel & Lihat/Kelola Data)
+     * `api.php` (Backend CRUD & Sinkronisasi Excel -> Hapus Lama & Insert Baru)
+     * `api_reminder_check.php` (API JSON untuk aplikasi popup Windows)
+     * `config.php` (Koneksi database `calibration_db`, batas H-90 hari)
+
+2. UPLOAD & UPDATE DATA DARI EXCEL (`index.php`)
+   - Buka `http://localhost/calibration/index.php`.
+   - Klik atau seret file Excel (`EQUIPMENT-LIST-2026.xlsx`) ke panel upload.
+   - Klik **"Ganti Data Lama & Simpan ke Database"** untuk menghapus data
+     lama dan menggantinya dengan data terbaru dari Excel.
+
+3. PASANG NOTIFIKASI POPUP WINDOWS SAAT PC MENYALA (`pc_notifier/`)
+   - Buka folder `pc_notifier/`.
+   - Jika PC klien berbeda komputer dengan server XAMPP, ubah `localhost`
+     pada `API_URL` & `WEB_DASHBOARD_URL` di `calibration_notifier.py`
+     menjadi IP server (misal `192.168.1.50`).
+   - Klik ganda `install_startup.bat` untuk mendaftarkannya ke Windows Startup.
+   - Perilaku Notifikasi:
+     * Muncul otomatis saat PC dinyalakan jika ada equipment <= 90 hari
+       atau Overdue.
+     * Tampil selama **5 menit (05:00)** lalu menutup otomatis, atau bisa
+       langsung ditutup manual kapan saja lewat tombol **"Tutup"** / **"X"**.
+     * Jika tidak ada equipment yang mendekati jatuh tempo, aplikasi langsung
+       keluar tanpa mengganggu layar.
+====================================================================
