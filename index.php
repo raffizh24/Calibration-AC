@@ -6,13 +6,219 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calibration Due Date Reminder & Excel Sync - AC PE</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- SheetJS untuk membaca langsung file Excel (.xlsx / .xls) di browser dengan akurat -->
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+
+    <!-- OFFLINE ASSETS -->
+    <link rel="stylesheet" href="assets/css/tailwind.min.css">
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <script src="assets/js/xlsx.full.min.js"></script>
+
     <style>
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+
+        /* Polyfill Palet Warna Slate & Utility untuk Tailwind v2.2.19 Offline */
+        .bg-slate-50 {
+            background-color: #f8fafc !important;
+        }
+
+        .bg-slate-50\/70 {
+            background-color: rgba(248, 250, 252, 0.7) !important;
+        }
+
+        .hover\:bg-slate-50:hover {
+            background-color: #f8fafc !important;
+        }
+
+        .bg-slate-100 {
+            background-color: #f1f5f9 !important;
+        }
+
+        .bg-slate-200 {
+            background-color: #e2e8f0 !important;
+        }
+
+        .hover\:bg-slate-300:hover {
+            background-color: #cbd5e1 !important;
+        }
+
+        .disabled\:bg-slate-300:disabled {
+            background-color: #cbd5e1 !important;
+        }
+
+        .bg-slate-800 {
+            background-color: #1e293b !important;
+        }
+
+        .bg-slate-900 {
+            background-color: #0f172a !important;
+        }
+
+        .text-slate-400 {
+            color: #94a3b8 !important;
+        }
+
+        .text-slate-500 {
+            color: #64748b !important;
+        }
+
+        .text-slate-600 {
+            color: #475569 !important;
+        }
+
+        .text-slate-700 {
+            color: #334155 !important;
+        }
+
+        .text-slate-800 {
+            color: #1e293b !important;
+        }
+
+        .text-slate-900 {
+            color: #0f172a !important;
+        }
+
+        .border-slate-200 {
+            border-color: #e2e8f0 !important;
+        }
+
+        .border-slate-300 {
+            border-color: #cbd5e1 !important;
+        }
+
+        .border-slate-700 {
+            border-color: #334155 !important;
+        }
+
+        .border-l-slate-700 {
+            border-left-color: #334155 !important;
+        }
+
+        .divide-slate-200> :not([hidden])~ :not([hidden]) {
+            border-color: #e2e8f0 !important;
+        }
+
+        /* Aksen Status Light Mode (Emerald, Amber, Red) */
+        .bg-emerald-50 {
+            background-color: #ecfdf5 !important;
+        }
+
+        .bg-emerald-100 {
+            background-color: #d1fae5 !important;
+        }
+
+        .bg-emerald-600 {
+            background-color: #059669 !important;
+        }
+
+        .hover\:bg-emerald-500:hover {
+            background-color: #10b981 !important;
+        }
+
+        .text-emerald-400 {
+            color: #34d399 !important;
+        }
+
+        .text-emerald-600 {
+            color: #059669 !important;
+        }
+
+        .text-emerald-700 {
+            color: #047857 !important;
+        }
+
+        .border-l-emerald-600 {
+            border-left-color: #059669 !important;
+        }
+
+        .bg-amber-50 {
+            background-color: #fffbeb !important;
+        }
+
+        .bg-amber-50\/40 {
+            background-color: rgba(255, 251, 235, 0.4) !important;
+        }
+
+        .hover\:bg-amber-50:hover {
+            background-color: #fffbeb !important;
+        }
+
+        .bg-amber-100 {
+            background-color: #fef3c7 !important;
+        }
+
+        .text-amber-400 {
+            color: #fbbf24 !important;
+        }
+
+        .text-amber-600 {
+            color: #d97706 !important;
+        }
+
+        .text-amber-700 {
+            color: #b45309 !important;
+        }
+
+        .text-amber-800 {
+            color: #92400e !important;
+        }
+
+        .border-l-amber-500 {
+            border-left-color: #f59e0b !important;
+        }
+
+        .bg-red-50 {
+            background-color: #fef2f2 !important;
+        }
+
+        .bg-red-50\/40 {
+            background-color: rgba(254, 242, 242, 0.4) !important;
+        }
+
+        .hover\:bg-red-50:hover {
+            background-color: #fef2f2 !important;
+        }
+
+        .bg-red-100 {
+            background-color: #fee2e2 !important;
+        }
+
+        .bg-red-600 {
+            background-color: #dc2626 !important;
+        }
+
+        .text-red-500 {
+            color: #ef4444 !important;
+        }
+
+        .text-red-600 {
+            color: #dc2626 !important;
+        }
+
+        .text-red-700 {
+            color: #b91c1c !important;
+        }
+
+        .border-l-red-600 {
+            border-left-color: #dc2626 !important;
+        }
+
+        .bg-black\/50 {
+            background-color: rgba(0, 0, 0, 0.5) !important;
+        }
+
+        .text-\[11px\] {
+            font-size: 11px !important;
+        }
+
+        .text-\[10px\] {
+            font-size: 10px !important;
+        }
+
+        .min-w-\[230px\] {
+            min-width: 230px !important;
         }
 
         .table-container {
@@ -64,7 +270,6 @@
                     <span>Upload File Excel Equipment List (Hapus Data Lama &rarr; Insert Data Baru)</span>
                 </div>
                 <button onclick="toggleUploadPanel()" class="text-slate-400 hover:text-white text-xs">
-                    <!-- Ikon diubah ke chevron-down secara default karena tertutup -->
                     <i class="fa-solid fa-chevron-down" id="uploadChevron"></i>
                 </button>
             </div>
@@ -318,7 +523,6 @@
             icon.classList.toggle('fa-chevron-down');
         }
 
-        // Drag & Drop Handlers
         function handleDragOver(e) {
             e.preventDefault();
             document.getElementById('dropZone').classList.add('drop-active');
@@ -343,7 +547,6 @@
             }
         }
 
-        // Konversi serial tanggal Excel atau string tanggal ke YYYY-MM-DD
         function formatExcelDate(val) {
             if (val === null || val === undefined || val === '') return '';
             if (typeof val === 'number') {
@@ -561,9 +764,6 @@
             }
         }
 
-        // ==============================================================================
-        // LOAD & RENDER DATA TABLE
-        // ==============================================================================
         async function loadData() {
             const res = await fetch('api.php?action=list');
             const json = await res.json();
