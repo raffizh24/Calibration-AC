@@ -415,7 +415,6 @@
                             <th class="py-3 px-3 text-center">Status Reminder</th>
                             <th class="py-3 px-3">Cal. By / LOC</th>
                             <th class="py-3 px-3 text-center">Cert</th>
-                            <th class="py-3 px-3 text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody" class="divide-y divide-slate-200">
@@ -871,10 +870,6 @@
                 <div class="text-[10px] text-slate-500">${item.loc_cal || ''} &bull; ${item.cal_decision || ''}</div>
             </td>
             <td class="py-2.5 px-3 text-center whitespace-nowrap">${certBtn}</td>
-            <td class="py-2.5 px-3 text-center whitespace-nowrap">
-                <button onclick='editItem(${JSON.stringify(item).replace(/'/g, "&#39;")})' class="text-blue-600 hover:text-blue-800 px-1.5" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button onclick="deleteItem(${item.id}, '${item.control_no}')" class="text-red-500 hover:text-red-700 px-1.5" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-            </td>
         </tr>`;
             }).join('');
         }
